@@ -1,0 +1,46 @@
+%%%%%%%%%%% OBJECT COUNTING BY IMAGE PROCESSING %%%%%%%%%%%%%%%%%
+image = imread(&#39;mat2.PNG&#39;);
+%Read image from graphics file.
+imshow(image);
+%Display image.
+g = rgb2gray(image);
+%converts the true color image RGB to the grayscale intensity image.
+imshow(g);
+%Display image.
+imhist(g);
+%displays a plot of the histogram. If the input image is an indexed image,then the
+%histogramshows the distribution of pixel values above a colorbar of the colormap.
+bw = g&gt;199;
+%setting the grey scale range.
+imshow(bw);
+%Display image.
+se = strel(&#39;disk&#39;,4);
+%creates a disk-shaped structuring element, where r specifies the radius and n specifies
+%the number of line structuring elements used to approximate the disk shape.
+afterOpening = imopen(bw,se);
+%: Imopen(BW,SE) performs morphological opening on the grayscale or binary image BW.
+imshow(afterOpening);
+
+%Display image.
+afterClosing = imclose(bw,se);
+%: Imclose(BW,SE) performs morphological closing on the grayscale or binary image BW.
+imshow(afterClosing);
+%Display image.
+imshowpair(image,afterOpening,&#39;montage&#39;);
+imshowpair(image,afterClosing,&#39;montage&#39;);
+%uses the visualization method specified by method.. Places original image and method
+%image next to each other in the same image.
+[L,total_obj] = bwlabel(~afterClosing,4)
+%returns total_obj, the number of connected objects found in BW.
+subplot(2,3,1),imshow(image);
+title(&#39;Original Image&#39;);
+subplot(2,3,2),imshow(g);
+title(&#39;Displaying color image in grey scale&#39;);
+subplot(2,3,3),imhist(g);
+title(&#39;Plotting Histogram&#39;);
+subplot(2,3,4),imshow(bw);
+title(&#39;Plotting BW&#39;);
+subplot(2,3,5),imshow(afterOpening);
+title(&#39;Morphologically opening BW image&#39;);
+subplot(2,3,6),imshow(afterClosing);
+title(&#39;Morphologically closing BW image&#39;);
